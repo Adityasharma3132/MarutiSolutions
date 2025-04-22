@@ -12,6 +12,19 @@ export default function Home() {
   const heroTextRef = useScrollAnimation({ threshold: 0.5 });
   const navigate = useNavigate();
 
+  const homeStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Maruti Solutions',
+    url: 'https://marutisolutions.com',
+    description: 'Leading software development company providing innovative solutions in AI, web development, and digital transformation.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      'target': 'https://marutisolutions.com/search?q={search_term_string}',
+      'query-input': 'required name=search_term_string'
+    }
+  };
+
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -19,9 +32,19 @@ export default function Home() {
   return (
     <div className="relative min-h-screen">
       <SEO 
-        title="Transforming Business with AI & Intelligent Solutions"
-        description="Maruti Solutions provides cutting-edge AI solutions, custom software development, and digital transformation services for businesses across India."
-        keywords={["AI Solutions", "Machine Learning", "Software Development", "Digital Transformation", "RAG Systems", "Custom Software"]}
+        title="Home"
+        description="Leading software development company providing innovative solutions in AI, web development, and digital transformation."
+        keywords={[
+          'software development',
+          'AI solutions',
+          'web development',
+          'digital transformation',
+          'IT services',
+          'technology consulting',
+          'Maruti Solutions'
+        ]}
+        structuredData={homeStructuredData}
+        canonicalUrl="/"
       />
       <Scene />
       

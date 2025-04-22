@@ -1,5 +1,6 @@
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { motion } from 'framer-motion';
+import SEO from '../components/shared/SEO';
 
 export default function TermsOfService() {
   const introRef = useScrollAnimation();
@@ -11,6 +12,11 @@ export default function TermsOfService() {
 
   return (
     <div className="min-h-screen pt-20">
+      <SEO 
+        title="Terms of Service | Maruti Solutions"
+        description="Read our terms of service to understand the rules, guidelines, and agreements for using Maruti Solutions' services and products."
+        keywords={["Terms of Service", "Legal Agreement", "Service Terms", "Usage Policy", "Maruti Solutions"]}
+      />
       {/* Hero Section */}
       <section className="section bg-background-light/30">
         <div className="container">

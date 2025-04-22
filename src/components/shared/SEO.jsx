@@ -1,53 +1,81 @@
 import { Helmet } from 'react-helmet-async';
+import PropTypes from 'prop-types';
 
-export default function SEO({ 
+const SEO = ({ 
   title, 
   description, 
-  keywords = [], 
-  ogImage = '/assets/og-image.jpg',
+  keywords, 
+  ogImage = '/images/og-image.jpg',
   ogType = 'website',
-  canonicalUrl
-}) {
-  // Construct the full title with company name
-  const fullTitle = title ? `${title} | Maruti Solutions` : 'Maruti Solutions - AI & Software Development Services';
-  
-  // Default description if none provided
-  const metaDescription = description || 'Maruti Solutions provides cutting-edge AI solutions, custom software development, and digital transformation services for businesses across India.';
-  
-  // Construct canonical URL
-  const siteUrl = 'https://marutisolutions.com';
-  const canonical = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl;
+  twitterCard = 'summary_large_image',
+  canonicalUrl,
+  structuredData // New prop for JSON-LD data
+}) => {
+  const siteUrl = 'https://marutisolutions.com'; // Replace with your actual domain
+  const fullTitle = `${title} | Maruti Solutions`;
+  const defaultDescription = 'Maruti Solutions - Your trusted partner for innovative software solutions, web development, and digital transformation.';
+  const finalDescription = description || defaultDescription;
+  const finalCanonicalUrl = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl;
+
+  // Default organization structured data
+  const defaultStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Maruti Solutions',
+    url: siteUrl,
+    logo: `${siteUrl}/images/logo.png`,
+    sameAs: [
+      'https://twitter.com/marutisolutions',
+      'https://www.linkedin.com/company/maruti-solutions',
+      // Add other social media profiles
+    ]
+  };
+
+  const finalStructuredData = structuredData || defaultStructuredData;
 
   return (
     <Helmet>
-      {/* Basic Metadata */}
+      {/* Basic Meta Tags */}
       <title>{fullTitle}</title>
-      <meta name="description" content={metaDescription} />
-      {keywords.length > 0 && (
-        <meta name="keywords" content={keywords.join(', ')} />
-      )}
-      
-      {/* Canonical Link */}
-      <link rel="canonical" href={canonical} />
-      
-      {/* Open Graph / Facebook */}
-      <meta property="og:type" content={ogType} />
-      <meta property="og:url" content={canonical} />
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={metaDescription} />
-      <meta property="og:image" content={`${siteUrl}${ogImage}`} />
-      
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={metaDescription} />
-      <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
-      
-      {/* Additional SEO-friendly tags */}
+      <meta name="description" content={finalDescription} />
+      <meta name="keywords" content={keywords.join(', ')} />
       <meta name="robots" content="index, follow" />
       <meta name="language" content="English" />
-      <meta name="revisit-after" content="7 days" />
       <meta name="author" content="Maruti Solutions" />
+      <link rel="canonical" href={finalCanonicalUrl} />
+
+      {/* Open Graph Meta Tags */}
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={finalDescription} />
+      <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+      <meta property="og:url" content={finalCanonicalUrl} />
+      <meta property="og:type" content={ogType} />
+      <meta property="og:site_name" content="Maruti Solutions" />
+
+      {/* Twitter Card Meta Tags */}
+      <meta name="twitter:card" content={twitterCard} />
+      <meta name="twitter:site" content="@marutisolutions" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={finalDescription} />
+      <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+      {/* JSON-LD Structured Data */}
+      <script type="application/ld+json">
+        {JSON.stringify(finalStructuredData)}
+      </script>
     </Helmet>
   );
-}
+};
+
+SEO.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  keywords: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ogImage: PropTypes.string,
+  ogType: PropTypes.string,
+  twitterCard: PropTypes.string,
+  canonicalUrl: PropTypes.string,
+  structuredData: PropTypes.object
+};
+
+export default SEO;
